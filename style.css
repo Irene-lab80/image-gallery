@@ -1,0 +1,144 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    color: white;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+  color: #000000;
+}
+
+a {
+  text-decoration: none;
+  display: block;
+}
+
+ul {
+  list-style: none;
+}
+
+h1 {
+  margin: 0;
+  text-align: center;
+  padding: 20px;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  filter: sepia(70%);
+  transition: 0.5s;
+}
+
+h1:hover {
+    filter: sepia(0);
+    transform: scale(98%);
+}
+
+.container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header {
+    width: 100%;
+    border-bottom: 3px solid orange;
+    background-color: #000000;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.search {
+    align-items: center;
+    display: flex;
+    position: relative;
+}
+
+input {
+    padding: 0.5rem;
+    outline: none;
+    font-size: 1rem;
+}
+
+
+.button {
+    position: absolute;
+    right: 10px;
+    color: black;
+    cursor: pointer;
+}
+
+.next {
+    position: fixed;
+    top: 90%;
+    right: 0%;
+    padding: 0.5rem;
+    border: 1px solid black;
+    margin: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 10px;    
+    column-gap: 10px;
+    padding: 10px;
+    
+}
+
+img {
+    width: 380px;
+    height: 214px;
+    object-fit: cover;
+    object-position: center;
+    cursor: pointer;
+    filter: sepia(70%);
+    transition: 0.5s;
+}
+
+img:hover {
+    filter: sepia(0);
+    transform: scale(98%);
+}
+
+.rs-icon {
+    width: initial;
+    height: initial;
+}
+
+
+.footer {
+    border-top: 3px solid orange;
+    width: 100%;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+
+.footer .container {
+    display: flex;
+    justify-content:space-between;
+    align-items: center;    padding: 10px;
+}
+.footer__copyright-flex {
+    display: flex;
+}
+
+.footer__copyright {
+    padding-left: 20px;
+}
