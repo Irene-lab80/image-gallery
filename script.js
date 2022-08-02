@@ -6,6 +6,8 @@ const searchBtn = document.querySelector(".search-btn");
 const closeBtn = document.querySelector(".close-btn");
 const pagination = document.querySelector(".pagination");
 const paginationBtns = document.querySelector(".pagination__buttons-container");
+const paginationLeft = document.querySelector("#pagination-left");
+const paginationRight = document.querySelector("#pagination-right");
 
 let currentData;
 let currentPage = 1;
@@ -13,11 +15,12 @@ let search = false;
 let query = "random";
 input.focus();
 closeBtn.style.display = "none";
+paginationLeft.style.opacity = "0.3";
 
 // GET DATA
-async function getData(currentPage) {
+async function getData(page) {
   const res = await fetch(
-    `https://api.unsplash.com/search/photos?page=${currentPage}&per_page=30&query=${query}&orientation=landscape&client_id=${accesKey}`
+    `https://api.unsplash.com/search/photos?page=${page}&per_page=30&query=${query}&orientation=landscape&client_id=${accesKey}`
   );
   const data = await res.json();
   displayData(data, 30, gallery, currentPage);
@@ -40,8 +43,36 @@ paginationBtns.addEventListener("click", (e) => {
     currentPage = e.target.innerText;
     console.log(currentPage);
     getData(currentPage);
+    disableArrows(currentPage);
   }
 });
+
+paginationLeft.addEventListener("click", () => {
+  if (currentPage == 1) return;
+  currentPage--;
+  getData(currentPage);
+  disableArrows(currentPage);
+});
+
+paginationRight.addEventListener("click", () => {
+  if (currentPage > 20) return;
+  currentPage++;
+  getData(currentPage);
+  disableArrows(currentPage);
+});
+
+function disableArrows(page) {
+  if (page == 1) {
+    paginationLeft.style.opacity = "0.3";
+  } else {
+    paginationLeft.style.opacity = "1";
+  }
+  if (page == 21) {
+    paginationRight.style.opacity = "0.3";
+  } else {
+    paginationRight.style.opacity = "1";
+  }
+}
 
 function paginationButton(page) {
   let button = document.createElement("button");
@@ -115,7 +146,7 @@ input.addEventListener("keypress", function (e) {
 
 // ON PAGE LOAD
 function load() {
-  getData();
+  getData(currentPage);
 }
 
 window.onload = load;
