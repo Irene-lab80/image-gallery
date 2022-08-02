@@ -1,4 +1,3 @@
-const url = `https://api.unsplash.com/search/photos?query=random&per_page=30&orientation=landscape&client_id=XlEFZNo448eCjf1xBGJMI2mLBHDiy-XKlpGgOPiGhZ8`;
 const gallery = document.querySelector(".gallery");
 const accesKey = "XlEFZNo448eCjf1xBGJMI2mLBHDiy-XKlpGgOPiGhZ8";
 const next = document.querySelector(".next-btn");
@@ -7,21 +6,26 @@ const searchBtn = document.querySelector(".search-btn");
 const closeBtn = document.querySelector(".close-btn");
 const pagination = document.querySelector(".pagination");
 
+let currentData;
 let currentPage = 1;
 let search = false;
-let query = "";
+let query = "random";
 input.focus();
 closeBtn.style.display = "none";
 
-async function getData() {
-  const res = await fetch(url);
+// GET DATA
+async function getData(currentPage) {
+  const res = await fetch(
+    `https://api.unsplash.com/search/photos?page=${currentPage}&per_page=30&query=${query}&orientation=landscape&client_id=${accesKey}`
+  );
   const data = await res.json();
-  displayData(data, 30, gallery);
-  console.log(data);
-  // setupPagination(data);
+  displayData(data, 30, gallery, currentPage);
+  setupPagination(data);
 }
 
+// PAGINATION
 const setupPagination = (items) => {
+  pagination.innerHTML = "";
   const leftBtn = document.createElement("button");
   leftBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i>';
   leftBtn.classList.add("pagination__button");
@@ -29,15 +33,26 @@ const setupPagination = (items) => {
   const rightBtn = document.createElement("button");
   rightBtn.innerHTML = '<i class="fa-solid fa-arrow-right"></i>';
   rightBtn.classList.add("pagination__button");
+  pagination.append(leftBtn);
 
   let pageCount = items.total_pages;
-  pagination.append(leftBtn);
-  for (let i = 1; i < pageCount + 1; i++) {
+
+  for (let i = 1; i < pageCount; i++) {
     let btn = paginationButton(i);
     pagination.append(btn);
+    // btn.classList.add('hidden')
   }
+
   pagination.append(rightBtn);
 };
+
+pagination.addEventListener("click", (e) => {
+  if (e.target.classList.contains("pagination__button")) {
+    currentPage = e.target.innerText;
+    console.log(currentPage);
+    getData(currentPage);
+  }
+});
 
 function paginationButton(page) {
   let button = document.createElement("button");
@@ -49,14 +64,9 @@ function paginationButton(page) {
   return button;
 }
 
+// DISPALY DATA
 function displayData(data, itemsPerPage, wrapper) {
   wrapper.innerHTML = "";
-  const loopStart = itemsPerPage * currentPage;
-  const paginatedItems = data.results.slice(
-    loopStart,
-    loopStart + itemsPerPage
-  );
-  console.log(paginatedItems);
   for (let i = 0; i < itemsPerPage; i++) {
     const picture = document.createElement("div");
     picture.innerHTML = `<a class="picture" href="${data.results[i].urls.full}" target="_blank"><img class="picture__img" src=${data.results[i].urls.regular}></a>`;
@@ -64,13 +74,21 @@ function displayData(data, itemsPerPage, wrapper) {
   }
 }
 
+//const message = document.createElement("h2");
+// message.innerText = "NOTHING FOUND";
+// message.classList.add("message");
+// wrapper.append(message);
+//
+
+// SEARCH
 async function searchData(query) {
   const res = await fetch(
-    `https://api.unsplash.com/search/photos?query=${query}&per_page=30&orientation=landscape&client_id=XlEFZNo448eCjf1xBGJMI2mLBHDiy-XKlpGgOPiGhZ8`
+    `https://api.unsplash.com/search/photos?page=${currentPage}&per_page=30&query=${query}&orientation=landscape&client_id=${accesKey}`
   );
   const data = await res.json();
-  console.log(data);
-  displayData(data, 30, gallery);
+  // console.log(data);
+  displayData(data, 30, gallery, currentPage);
+  setupPagination(data);
 }
 
 function searchDataEnter() {
@@ -106,6 +124,7 @@ input.addEventListener("keypress", function (e) {
   }
 });
 
+// ON PAGE LOAD
 function load() {
   getData();
 }
