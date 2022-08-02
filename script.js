@@ -5,6 +5,7 @@ const input = document.querySelector("input");
 const searchBtn = document.querySelector(".search-btn");
 const closeBtn = document.querySelector(".close-btn");
 const pagination = document.querySelector(".pagination");
+const paginationBtns = document.querySelector(".pagination__buttons-container");
 
 let currentData;
 let currentPage = 1;
@@ -25,28 +26,16 @@ async function getData(currentPage) {
 
 // PAGINATION
 const setupPagination = (items) => {
-  pagination.innerHTML = "";
-  const leftBtn = document.createElement("button");
-  leftBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i>';
-  leftBtn.classList.add("pagination__button");
-
-  const rightBtn = document.createElement("button");
-  rightBtn.innerHTML = '<i class="fa-solid fa-arrow-right"></i>';
-  rightBtn.classList.add("pagination__button");
-  pagination.append(leftBtn);
-
+  paginationBtns.innerHTML = "";
   let pageCount = items.total_pages;
 
   for (let i = 1; i < pageCount; i++) {
     let btn = paginationButton(i);
-    pagination.append(btn);
-    // btn.classList.add('hidden')
+    paginationBtns.append(btn);
   }
-
-  pagination.append(rightBtn);
 };
 
-pagination.addEventListener("click", (e) => {
+paginationBtns.addEventListener("click", (e) => {
   if (e.target.classList.contains("pagination__button")) {
     currentPage = e.target.innerText;
     console.log(currentPage);
